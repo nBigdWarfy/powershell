@@ -23,7 +23,7 @@ while($true) {
             # Get the IP address corresponding to the hostname
             $ip = [System.Net.Dns]::GetHostAddresses($hostname).IPAddressToString
         } catch {
-            # If can't get the ip, display a error message 
+            # If unable to retrieve the IP address, catch the exception and display an error message
             Write-Host "Error: $_"
         }
 
