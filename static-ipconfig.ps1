@@ -18,10 +18,10 @@ try {
     Write-Host "Current DNS Servers: $CurrentDnsServers"
 
     # Remove any existing IP configuration from the network interface without user confirmation
-    # Remove-NetIPAddress -InterfaceAlias $InterfaceName -Confirm:$false
+    Remove-NetIPAddress -InterfaceAlias $InterfaceName -Confirm:$false
 
     # Configure the IP address as static using the previously retrieved IP address, prefix length, and default gateway
-    New-NetIPAddress -InterfaceAlias $InterfaceName -IPAddress $CurrentIpAddress -PrefixLength $PrefixLength -DefaultGateway $CurrentGateway
+    New-NetIPAddress -InterfaceAlias $InterfaceName -IPAddress $CurrentIpAddress -PrefixLength $PrefixLength -DefaultGateway $CurrentGateway -Confirm:$false
 
     # Configure the DNS servers using the previously retrieved DNS server addresses
     Set-DnsClientServerAddress -InterfaceAlias $InterfaceName -ServerAddresses $CurrentDnsServers
@@ -42,6 +42,9 @@ try {
 
     # Re-enable DHCP on the network interface to automatically obtain an IP address and DNS server addresses
     Set-NetIPInterface -InterfaceAlias $InterfaceName -Dhcp Enabled
+
+    # Restart the network interfaces
+    Restart-NetAdapter -Name "*"
 
     # Clean the terminal
     Clear-Host
